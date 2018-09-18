@@ -1,0 +1,6 @@
+[submodule "vendor/concourse-credhub"]
+	path = vendor/concourse-credhub
+	url = https://github.com/pivotalservices/concourse-credhub.git
+[submodule "vendor/concourse-bosh-deployment"]
+	path = vendor/concourse-bosh-deployment
+	url = https://github.com/concourse/concourse-bosh-deployment.git
