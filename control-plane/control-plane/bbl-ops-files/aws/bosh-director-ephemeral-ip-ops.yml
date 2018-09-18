@@ -1,4 +1,0 @@
-
-- type: replace
-  path: /resource_pools/name=vms/cloud_properties/auto_assign_public_ip?
-  value: true
