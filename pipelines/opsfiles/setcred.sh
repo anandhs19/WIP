@@ -21,3 +21,4 @@ credhub generate -n /concourse/pcf-$MY_ENV/db_uaa_password -t password
 credhub generate -n /concourse/pcf-$MY_ENV/db_master_password -t password
 credhub generate -n /concourse/pcf-$MY_ENV/opsman_admin_password -t password
 
+credhub set -n /concourse/pcf-$MY-ENV/pcf-aws-prod-pem -t rsa -p CHANGEME #include path of pem
