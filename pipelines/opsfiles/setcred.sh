@@ -22,3 +22,4 @@ credhub generate -n /concourse/pcf-$MY_ENV/db_master_password -t password
 credhub generate -n /concourse/pcf-$MY_ENV/opsman_admin_password -t password
 
 credhub set -n /concourse/pcf-$MY_ENV/pcf-$MY_ENV-pem -t rsa -p CHANGEME #include path of pem
+credhub set -n /concourse/pcf-$MY_ENV/git_private_key -t rsa -p CHANGEME #e.g Private key ~/.ssh/id_rsa
