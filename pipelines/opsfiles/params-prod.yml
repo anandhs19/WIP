@@ -12,10 +12,10 @@ aws_az2: us-west-2b
 aws_az3: us-west-2c
 
 # ARN of the wildcard certificate to use; upload this in [AWS](http://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_server-certs.html#upload-server-certificate). This must be done prior to running the pipeline.
-aws_cert_arn: CHANGEME
+aws_cert_arn: arn:aws:acm:us-west-2:591090939115:certificate/75c545b2-94e8-4300-81c3-10d94d43f3a9
 
 # Upload PEM to AWS as the below key pair name
-aws_key_name: pcf-aws-dev
+aws_key_name: pcf-aws-prod
 
 aws_region: us-west-2
 
@@ -100,7 +100,7 @@ apps_domain: apps.prod.pcf-aws.com   # e.g. apps.pcf.example.com
 ert_errands_to_disable: none
 
 # PCF Elastic Runtime minor version to track
-ert_major_minor_version: ^2\.2\.3+$ # ERT minor version to track (e.g ^2\.0\.[0-9]+$ will track 2.0.x versions)
+ert_major_minor_version: ^2\.2\.0+$ # ERT minor version to track (e.g ^2\.0\.[0-9]+$ will track 2.0.x versions)
 
 # Optional. Duration in seconds to maintain an open connection when client supports keep-alive.
 frontend_idle_timeout: 61
@@ -132,10 +132,10 @@ opsman_allow_ssh_cidr_ranges: 0.0.0.0/0
 opsman_domain_or_ip_address: opsman.prod.pcf-aws.com #This must be your pcf_ert_domain with "opsman." as a prefix. For example, opsman.pcf.example.com
 
 # PCF Ops Manager minor version to track
-opsman_major_minor_version: ^2\.2\.3+$ # Ops Manager minor version to track (e.g ^2\.0\.[0-9]+$ will track 2.0.x versions)
+opsman_major_minor_version: ^2\.2\.0+$ # Ops Manager minor version to track (e.g ^2\.0\.[0-9]+$ will track 2.0.x versions)
 
 # Private Key of the keypair uploaded to AWS to be used for Operations Manager, NAT VMs.
-PEM: ((pcf-aws-prod-pem))
+PEM: ((pcf-aws-prod-pem.private_key))
 
 # Pivnet token for downloading resources from Pivnet. Find this token at https://network.pivotal.io/users/dashboard/edit-profile
 pivnet_token: ((pivnet_token))
@@ -146,7 +146,7 @@ poe_ssl_cert1:
 poe_ssl_key1:
 
 # Route53 zone to add records to
-ROUTE_53_ZONE_ID: Z1RC9KXPW2H6ZX
+ROUTE_53_ZONE_ID: Z1RLZ4N4R8PE77
 
 # Optional - these certificates can be used to validate the certificates from incoming client requests.
 # All CA certificates should be appended together into a single collection of PEM-encoded entries.
@@ -159,7 +159,7 @@ routing_disable_http: false
 routing_tls_termination: load_balancer
 
 # For terraform state file (http://docs.aws.amazon.com/general/latest/gr/rande.html#s3_region)
-S3_ENDPOINT: https://s3.amazonaws.com
+S3_ENDPOINT: https://s3.us-west-2.amazonaws.com
 S3_OUTPUT_BUCKET: prod-pcf-wiprodojo-tfstate
 
 # Setting appropriate Application Security Groups is critical for a secure
@@ -212,4 +212,4 @@ vpc_cidr: 192.168.0.0/16
 
 # Prefix to use for Terraform-managed infrastructure, e.g. 'pcf-terraform'
 # Must be globally unique.
-terraform_prefix: pcf-prod-terraform
+terraform_prefix: pcf-prod-wipro
