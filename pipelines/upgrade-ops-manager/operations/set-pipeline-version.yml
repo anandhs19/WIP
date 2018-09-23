@@ -1,0 +1,6 @@
+- op: replace
+  path: /resources/name=pcf-pipelines/source
+  value:
+    uri: https://github.com/pivotal-cf/pcf-pipelines.git
+    branch: master
+    tag_filter: v0.23.5

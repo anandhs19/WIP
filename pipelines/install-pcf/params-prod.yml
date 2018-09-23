@@ -100,7 +100,7 @@ apps_domain: apps.prod.pcf-aws.com   # e.g. apps.pcf.example.com
 ert_errands_to_disable: none
 
 # PCF Elastic Runtime minor version to track
-ert_major_minor_version: ^2\.2\.0+$ # ERT minor version to track (e.g ^2\.0\.[0-9]+$ will track 2.0.x versions)
+ert_major_minor_version: ^2\.2\.5+$ # ERT minor version to track (e.g ^2\.0\.[0-9]+$ will track 2.0.x versions)
 
 # Optional. Duration in seconds to maintain an open connection when client supports keep-alive.
 frontend_idle_timeout: 61
@@ -132,7 +132,7 @@ opsman_allow_ssh_cidr_ranges: 0.0.0.0/0
 opsman_domain_or_ip_address: opsman.prod.pcf-aws.com #This must be your pcf_ert_domain with "opsman." as a prefix. For example, opsman.pcf.example.com
 
 # PCF Ops Manager minor version to track
-opsman_major_minor_version: ^2\.2\.0+$ # Ops Manager minor version to track (e.g ^2\.0\.[0-9]+$ will track 2.0.x versions)
+opsman_major_minor_version: ^2\.2\.5+$ # Ops Manager minor version to track (e.g ^2\.0\.[0-9]+$ will track 2.0.x versions)
 
 # Private Key of the keypair uploaded to AWS to be used for Operations Manager, NAT VMs.
 PEM: ((pcf-aws-prod-pem.private_key))
