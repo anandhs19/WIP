@@ -32,6 +32,14 @@ All submodules and third-party resources are kept in the `vendor/` folder. They 
 To checkout the pinned version of all submodules run the following command:
 
 ```
+git submodule update --init --recursive
+```
+
+To update submodules to latest remote version of master branch use:
+
+```
+git pull --recurse-submodules
+OR
 git submodule update --recursive --remote
 ```
 

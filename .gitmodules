@@ -4,3 +4,6 @@
 [submodule "vendor/concourse-bosh-deployment"]
 	path = vendor/concourse-bosh-deployment
 	url = https://github.com/concourse/concourse-bosh-deployment.git
+[submodule "vendor/pcf-prometheus-pipeline"]
+	path = vendor/pcf-prometheus-pipeline
+	url = https://github.com/pivotal-cf/pcf-prometheus-pipeline.git

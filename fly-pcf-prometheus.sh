@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 #
-# Description: Set upgrade-ops-manager pipeline in Concourse and apply operations
-# Written by: Amlan Datta - adatta@pivotal.io
+# Description: Set pcf-prometheus pipeline in Concourse and apply operations
+# Written by: Ryan Meharg - ryan.meharg@altoros.com
 #
 # -e          - fail on errors
 # -u          - ensure all variables are set
@@ -12,8 +12,9 @@ set -eu
 set -o pipefail
 [[ -z "${DEBUG:-""}" ]] || set -x
 
+# Check that environment has been specificed
 [[ $# -lt 1 ]] && (
-    echo -e "Usage: ./fly-upgrade-ops-manager.sh prod|dev"
+    echo -e "Usage: ./fly-pcf-prometheus.sh prod|dev"
     exit 1
 )
 
@@ -26,7 +27,6 @@ if [ -z "$(which fly)" ]; then
 fi
 
 # Set pipeline non-interactively with config file and load env parameters
-fly -t concourse-$1 set-pipeline -n -p upgrade-ops-manager \
-  -c <(cat vendor/pcf-pipelines/upgrade-ops-manager/aws/pipeline.yml | \
-  yaml-patch -o pipelines/upgrade-ops-manager/operations/set-pipeline-version.yml) \
-  -l pipelines/upgrade-ops-manager/params-$1.yml
+fly -t concourse-$1 set-pipeline -n -p pcf-prometheus \
+  -c vendor/pcf-prometheus-pipeline/pipeline/pipeline.yml \
+  -l pipelines/pcf-prometheus/params-$1.yml

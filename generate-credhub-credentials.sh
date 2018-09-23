@@ -54,5 +54,6 @@ credhub generate -n /concourse/pcf-$1/install-pcf/db_routing_password -t passwor
 credhub generate -n /concourse/pcf-$1/install-pcf/db_silk_password -t password
 credhub generate -n /concourse/pcf-$1/install-pcf/db_uaa_password -t password
 credhub generate -n /concourse/pcf-$1/install-pcf/db_master_password -t password
+
 credhub generate -n /concourse/pcf-$1/opsman_admin_password -t password
 

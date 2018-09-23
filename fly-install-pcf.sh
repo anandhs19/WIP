@@ -28,6 +28,6 @@ fi
 
 # Set pipeline non-interactively with config file and load env parameters
 fly -t concourse-$1 set-pipeline -n -p install-pcf \
-  -c <(cat vendors/pcf-pipelines/install-pcf/aws/pipeline.yml | \
+  -c <(cat vendor/pcf-pipelines/install-pcf/aws/pipeline.yml | \
   yaml-patch -o pipelines/install-pcf/operations/set-pipeline-version.yml) \
   -l pipelines/install-pcf/params-$1.yml
