@@ -1,0 +1,25 @@
+- op: replace
+  path: /resource_types/name=bosh-creds
+  value:
+    name: bosh-creds
+    type: docker-image
+    source:
+      repository: rmeharg/bosh-creds-resource
+      tag: 1.5
+
+- op: replace
+  path: /resources/name=pcf-bosh-creds
+  value:
+    name: pcf-bosh-creds
+    type: bosh-creds
+    source:
+      pcf_opsman_admin_username: ((pcf_opsman_admin_username))
+      pcf_opsman_admin_password: ((pcf_opsman_admin_password))
+      opsman_url: ((opsman_url))
+      external_bosh_address: ((external_bosh_address))
+      external_bosh_client: ((external_bosh_client))
+      external_bosh_client_secret: ((external_bosh_client_secret))
+      external_bosh_ca_cert: ((external_bosh_ca_cert))
+      jumpbox_ssh_key: ((jumpbox_ssh_key))
+      jumpbox_url: ((jumpbox_url))
+      jumpbox_username: ((jumpbox_username))

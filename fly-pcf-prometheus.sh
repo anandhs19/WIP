@@ -29,4 +29,6 @@ fi
 # Set pipeline non-interactively with config file and load env parameters
 fly -t concourse-$1 set-pipeline -n -p pcf-prometheus \
   -c vendor/pcf-prometheus-pipeline/pipeline/pipeline.yml \
+  -c <(cat vendor/pcf-prometheus-pipeline/pipeline/pipeline.yml | \
+  yaml-patch -o pipelines/pcf-prometheus/operations/target-opsman-director.yml) \
   -l pipelines/pcf-prometheus/params-$1.yml

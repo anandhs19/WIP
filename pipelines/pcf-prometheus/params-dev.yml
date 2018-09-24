@@ -47,3 +47,9 @@ deploy_vm_type_small: small
 metrics_environment: dev
 
 skip_ssl_verify: true
+
+# Jumpbox configuration, typically this is opsman, but can be different
+jumpbox_ssh_key: ((pcf-aws-dev-pem.private_key))
+jumpbox_url: opsman.dev.pcf-aws.com
+jumpbox_username: ubuntu
+
