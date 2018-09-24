@@ -7,3 +7,6 @@
 [submodule "vendor/pcf-prometheus-pipeline"]
 	path = vendor/pcf-prometheus-pipeline
 	url = https://github.com/pivotal-cf/pcf-prometheus-pipeline.git
+[submodule "vendor/pcf-pipelines"]
+	path = vendor/pcf-pipelines
+	url = https://github.com/pivotal-cf/pcf-pipelines.git
