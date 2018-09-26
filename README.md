@@ -11,18 +11,29 @@ Required CLIs on your local machine or jumpbox:
 - [UAAC](https://github.com/cloudfoundry/cf-uaac/releases)
 - [CF](https://github.com/cloudfoundry/cli/releases)
 
+Connect to Control Plane BOSH
 ```shell
 cd control-plane
 eval "$(bbl print-env)"
-credhub login
 bosh env
 ```
 
+SSH to Control Plane VMs
 ```shell
 bbl env-id
 bbl lbs
 bbl ssh --jumpbox
 bbl ssh --director
+```
+
+Connect to CredHub Director
+```shell
+. ./credhub director 
+```
+
+Connect to CredHub Concourse
+```shell
+. ./credhub concourse
 ```
 
 ## Using Git Submodules
