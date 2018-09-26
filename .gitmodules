@@ -10,3 +10,6 @@
 [submodule "vendor/pcf-pipelines"]
 	path = vendor/pcf-pipelines
 	url = https://github.com/pivotal-cf/pcf-pipelines.git
+[submodule "vendor/bbr-pcf-pipeline-tasks"]
+	path = vendor/bbr-pcf-pipeline-tasks
+	url = https://github.com/pivotal-cf/bbr-pcf-pipeline-tasks.git
