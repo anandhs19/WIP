@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# Description: Set pcf-prometheus pipeline in Concourse and apply operations
+# Description: Set install-prometheus pipeline in Concourse and apply operations
 # Written by: Ryan Meharg - ryan.meharg@altoros.com
 #
 # -e          - fail on errors
@@ -27,8 +27,6 @@ if [ -z "$(which fly)" ]; then
 fi
 
 # Set pipeline non-interactively with config file and load env parameters
-fly -t concourse-$1 set-pipeline -n -p pcf-prometheus \
+fly -t concourse-$1 set-pipeline -n -p install-prometheus \
   -c vendor/pcf-prometheus-pipeline/pipeline/pipeline.yml \
-  -c <(cat vendor/pcf-prometheus-pipeline/pipeline/pipeline.yml | \
-  yaml-patch -o pipelines/pcf-prometheus/operations/target-opsman-director.yml) \
   -l pipelines/pcf-prometheus/params-$1.yml

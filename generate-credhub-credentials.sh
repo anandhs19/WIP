@@ -14,7 +14,7 @@ set -o pipefail
 
 # Check that environment has been specificed
 [[ $# -lt 1 ]] && (
-    echo -e "Usage: ./generate-credhub-credentials.sh <MY_ENV>"
+    echo -e "Usage: ./generate-credhub-credentials.sh aws-dev|aws-prod"
     exit 1
 )
 
