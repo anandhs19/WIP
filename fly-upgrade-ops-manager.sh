@@ -26,7 +26,9 @@ if [ -z "$(which fly)" ]; then
 fi
 
 # Set pipeline non-interactively with config file and load env parameters
+
 fly -t concourse-$1 set-pipeline -n -p upgrade-ops-manager \
   -c <(cat vendor/pcf-pipelines/upgrade-ops-manager/aws/pipeline.yml | \
-  yaml-patch -o pipelines/upgrade-ops-manager/operations/set-pipeline-version.yml) \
+  yaml-patch -o pipelines/upgrade-ops-manager/operations/set-pipeline-version.yml \
+             -o pipelines/upgrade-ops-manager/operations/schedule-opsman.yml) \
   -l pipelines/upgrade-ops-manager/params-$1.yml
