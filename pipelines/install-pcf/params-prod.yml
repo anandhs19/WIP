@@ -12,6 +12,7 @@ aws_az2: us-west-2b
 aws_az3: us-west-2c
 
 # ARN of the wildcard certificate to use; upload this in [AWS](http://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_server-certs.html#upload-server-certificate). This must be done prior to running the pipeline.
+#
 aws_cert_arn: arn:aws:acm:us-west-2:591090939115:certificate/75c545b2-94e8-4300-81c3-10d94d43f3a9
 
 # Upload PEM to AWS as the below key pair name

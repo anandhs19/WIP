@@ -13,12 +13,12 @@ set -o pipefail
 [[ -z "${DEBUG:-""}" ]] || set -x
 
 [[ $# -lt 1 ]] && (
-    echo -e "Usage: ./fly-upgrade-tile.sh prod|dev pas|redis|mysql"
+    echo -e "Usage: ./fly-upgrade-tile.sh prod|dev pas|mysql|healthwatch"
     exit 1
 )
 
 [[ $# -lt 2 ]] && (
-    echo -e "Usage: ./fly-upgrade-tile.sh prod|dev pas|redis|mysql"
+    echo -e "Usage: ./fly-upgrade-tile.sh prod|dev pas|mysql|healthwatch"
     exit 1
 )
 
