@@ -55,7 +55,7 @@ product_globs: "*pivotal"
 # This can be found in the URL of the product page, e.g. for rabbitmq the URL
 # is https://network.pivotal.io/products/pivotal-rabbitmq-service, and the
 # product slug is 'pivotal-rabbitmq-service'.
-product_slug: "pivotal-mysql"
+product_slug: "p-spring-cloud-services"
 
 # The minor product version to track, as a regexp. To track 1.11.x of a product, this would be "^2\.0\.[0-9]+$", as shown below.
-product_version_regex: ^2\.3\.[0-9]+$
+product_version_regex: ^1\.5\.[0-9]+$
