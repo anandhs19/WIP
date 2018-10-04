@@ -10,6 +10,7 @@ Required CLIs on your local machine or jumpbox:
 - [CredHub](https://github.com/cloudfoundry-incubator/credhub-cli/releases)
 - [UAAC](https://github.com/cloudfoundry/cf-uaac/releases)
 - [CF](https://github.com/cloudfoundry/cli/releases)
+- [YAML-PATCH](https://github.com/krishicks/yaml-patch)
 
 Connect to Control Plane BOSH
 ```shell
