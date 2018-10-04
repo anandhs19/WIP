@@ -1,0 +1,327 @@
+instance_groups:
+- azs:
+  - z1
+  instances: 1
+  jobs:
+  - name: atc
+    properties:
+      add_local_users:
+      - ((local_user.username)):((local_user.password))
+      bind_port: 80
+      credhub:
+        client_id: concourse_to_credhub
+        client_secret: ((concourse_to_credhub_secret))
+        tls:
+          ca_cert:
+            certificate: ((atc_tls.ca))
+        url: https://concourse.pcf-aws.com:8844
+      external_url: https://concourse.pcf-aws.com
+      log_level: debug
+      main_team:
+        auth:
+          local:
+            users:
+            - ((local_user.username))
+      postgresql:
+        database: atc
+        role:
+          name: concourse
+          password: ((postgres_password))
+      tls_bind_port: 443
+      tls_cert: ((atc_tls.certificate))
+      tls_key: ((atc_tls.private_key))
+      token_signing_key: ((token_signing_key))
+    release: concourse
+  - name: tsa
+    properties:
+      authorized_keys:
+      - ((worker_key.public_key))
+      host_key: ((tsa_host_key))
+      log_level: debug
+      token_signing_key: ((token_signing_key))
+    release: concourse
+  - name: uaa
+    properties:
+      encryption:
+        active_key_label: KEY-1
+        encryption_keys:
+        - label: KEY-1
+          passphrase: ((encryption-keys-passphrase))
+      login:
+        saml:
+          serviceProviderCertificate: ((atc_tls.certificate))
+          serviceProviderKey: ((atc_tls.private_key))
+          serviceProviderKeyPassword: ""
+      uaa:
+        admin:
+          client_secret: ((uaa-admin))
+        clients:
+          concourse_to_credhub:
+            access-token-validity: 1200
+            authorities: credhub.read,credhub.write
+            authorized-grant-types: client_credentials
+            override: true
+            refresh-token-validity: 3600
+            scope: ""
+            secret: ((concourse_to_credhub_secret))
+          credhub_cli:
+            access-token-validity: 1200
+            authorities: uaa.resource
+            authorized-grant-types: password,refresh_token
+            override: true
+            refresh-token-validity: 3600
+            scope: credhub.read,credhub.write
+            secret: ""
+        jwt:
+          policy:
+            active_key_id: key-1
+            keys:
+              key-1:
+                signingKey: ((uaa-jwt.private_key))
+          revocable: true
+        logging_level: INFO
+        login:
+          client_secret: ((uaa-login))
+        port: 8181
+        scim:
+          users:
+          - groups:
+            - scim.write
+            - scim.read
+            - bosh.admin
+            - credhub.read
+            - credhub.write
+            name: admin
+            password: ((uaa-users-admin))
+        sslCertificate: ((atc_tls.certificate))
+        sslPrivateKey: ((atc_tls.private_key))
+        url: https://concourse.pcf-aws.com:8443
+        zones:
+          internal:
+            hostnames: []
+      uaadb:
+        databases:
+        - name: uaa
+          tag: uaa
+        db_scheme: postgresql
+        port: 5432
+        roles:
+        - name: uaa
+          password: ((uaa-db-password))
+          tag: admin
+    release: uaa
+  - name: credhub
+    properties:
+      credhub:
+        authentication:
+          uaa:
+            ca_certs:
+            - ((atc_tls.ca))
+            url: https://concourse.pcf-aws.com:8443
+            verification_key: ((uaa-jwt.public_key))
+        data_storage:
+          database: credhub
+          password: ((credhub-db-password))
+          port: 5432
+          require_tls: false
+          type: postgres
+          username: credhub
+        encryption:
+          keys:
+          - active: true
+            encryption_password: ((credhub-encryption-password))
+            provider_name: int
+          providers:
+          - name: int
+            type: internal
+        log_level: debug
+        port: 8844
+        tls: ((atc_tls))
+    release: credhub
+  name: web
+  networks:
+  - name: default
+  stemcell: xenial
+  vm_extensions:
+  - lb
+  vm_type: large
+- azs:
+  - z1
+  instances: 1
+  jobs:
+  - name: postgres
+    properties:
+      databases:
+        databases:
+        - name: atc
+        - name: credhub
+        - name: uaa
+        port: 5432
+        roles:
+        - name: concourse
+          password: ((postgres_password))
+        - name: credhub
+          password: ((credhub-db-password))
+        - name: uaa
+          password: ((uaa-db-password))
+    release: postgres
+  - name: database-backup-restorer
+    release: backup-and-restore-sdk
+  - name: bbr-atcdb
+    properties:
+      postgresql:
+        database: atc
+        role:
+          name: atc
+          password: ((atc-db-password))
+        sslmode: disable
+    release: concourse
+  - name: bbr-uaadb
+    properties:
+      uaadb:
+        databases:
+        - name: uaa
+          tag: uaa
+        db_scheme: postgresql
+        roles:
+        - name: uaa
+          password: ((uaa-db-password))
+          tag: admin
+    release: uaa
+  - name: bbr-credhubdb
+    properties:
+      credhub:
+        data_storage:
+          database: credhub
+          password: ((credhub-db-password))
+          type: postgres
+          username: credhub
+    release: credhub
+  name: db
+  networks:
+  - name: default
+  persistent_disk_type: 100GB
+  stemcell: xenial
+  vm_type: large
+- azs:
+  - z1
+  instances: 3
+  jobs:
+  - consumes:
+      baggageclaim:
+        from: worker-baggageclaim
+    name: worker
+    properties:
+      drain_timeout: 10m
+      tsa:
+        worker_key: ((worker_key))
+    release: concourse
+  - name: baggageclaim
+    properties:
+      log_level: debug
+    provides:
+      baggageclaim:
+        as: worker-baggageclaim
+    release: concourse
+  - name: garden
+    properties:
+      garden:
+        listen_address: 0.0.0.0:7777
+        listen_network: tcp
+    release: garden-runc
+  name: worker
+  networks:
+  - name: default
+  stemcell: xenial
+  vm_type: extra-large
+name: concourse
+releases:
+- name: concourse
+  sha1: 470a6fdd7cb82fc723d7d78930c7d261ca4a6cb4
+  url: https://bosh.io/d/github.com/concourse/concourse?v=4.2.1
+  version: 4.2.1
+- name: garden-runc
+  sha1: 2a7c813e7e4d862e19334addf022916fb6b91eb0
+  url: https://bosh.io/d/github.com/cloudfoundry/garden-runc-release?v=1.16.3
+  version: 1.16.3
+- name: postgres
+  sha1: a798999d29b9f5aa12035cff907b26674b491200
+  url: https://bosh.io/d/github.com/cloudfoundry/postgres-release?v=30
+  version: "30"
+- name: uaa
+  sha1: a7c14357ae484e89e547f4f207fb8de36d2b0966
+  url: https://bosh.io/d/github.com/cloudfoundry/uaa-release?v=60
+  version: 60
+- name: credhub
+  sha1: 648658efdef2ff18a69914d958bcd7ebfa88027a
+  url: https://bosh.io/d/github.com/pivotal-cf/credhub-release?v=1.9.3
+  version: 1.9.3
+- name: backup-and-restore-sdk
+  sha1: 2f8f805d5e58f72028394af8e750b2a51a432466
+  url: https://bosh.io/d/github.com/cloudfoundry-incubator/backup-and-restore-sdk-release?v=1.9.0
+  version: 1.9.0
+stemcells:
+- alias: xenial
+  os: ubuntu-xenial
+  version: latest
+update:
+  canaries: 1
+  canary_watch_time: 30000-1200000
+  max_in_flight: 3
+  serial: false
+  update_watch_time: 5000-1200000
+variables:
+- name: postgres_password
+  type: password
+- name: token_signing_key
+  type: rsa
+- name: tsa_host_key
+  type: ssh
+- name: worker_key
+  type: ssh
+- name: atc_ca
+  options:
+    common_name: atcCA
+    is_ca: true
+  type: certificate
+- name: atc_tls
+  options:
+    alternative_names:
+    - concourse.pcf-aws.com
+    ca: atc_ca
+    common_name: concourse.pcf-aws.com
+  type: certificate
+- name: atc-db-password
+  type: password
+- name: credhub-encryption-password
+  options:
+    length: 40
+  type: password
+- name: credhub-db-password
+  type: password
+- name: uaa-jwt
+  options:
+    key_length: 4096
+  type: rsa
+- name: uaa-users-admin
+  type: password
+- name: uaa-admin
+  type: password
+- name: uaa-login
+  type: password
+- name: uaa-credhub-admin
+  type: password
+- name: uaa-db-admin
+  type: password
+- name: uaa-db-password
+  type: password
+- name: concourse_to_credhub_secret
+  type: password
+- name: credhub_cli_password
+  type: password
+- name: concourse_client_secret
+  type: password
+- name: encryption-keys-passphrase
+  options:
+    length: 40
+  type: password
