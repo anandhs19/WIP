@@ -1,0 +1,68 @@
+# Deployment Name
+deployment_name: prometheus
+
+# Operations Manager credentials to set
+pcf_opsman_admin_username: admin
+pcf_opsman_admin_password: ((opsman_admin_password))
+opsman_url: opsman.dev.pcf-aws.com
+
+# Set to either opsman_bosh or external_bosh. For external BOSH you need to provide the details below
+director_for_deployment: external_bosh
+
+# If you set director_for_deployment to external_bosh then you need to provide the Director details. Otherwise keep them empty
+external_bosh_address: "https://10.0.0.6:25555"
+external_bosh_client: "admin"
+external_bosh_client_secret: "((controlplane_bosh_admin_password))"
+external_bosh_ca_cert: |
+  -----BEGIN CERTIFICATE-----
+  MIIDEzCCAfugAwIBAgIQCkCtAZpYJhdv1vZWMDLk0jANBgkqhkiG9w0BAQsFADAz
+  MQwwCgYDVQQGEwNVU0ExFjAUBgNVBAoTDUNsb3VkIEZvdW5kcnkxCzAJBgNVBAMT
+  AmNhMB4XDTE4MDkxMjA5MDUxNVoXDTE5MDkxMjA5MDUxNVowMzEMMAoGA1UEBhMD
+  VVNBMRYwFAYDVQQKEw1DbG91ZCBGb3VuZHJ5MQswCQYDVQQDEwJjYTCCASIwDQYJ
+  KoZIhvcNAQEBBQADggEPADCCAQoCggEBAPhARnVlihpy6d37mHZT6bYEktR3N8H6
+  Ur8jM6mitbr3ab3EAvWwASDYmPDAKvgdQHKdEVcEWbJxL03DafUtSWuI8s/7nS7U
+  13c1oohCIsQlRr7oQpi1gmq1cwqzvU0sL/Vl9OEoHyKp5c0QctY/zRcU7hwLoaWD
+  1g2zR+KW1b9Vktj9CZWuP+jLLv1WenxN/bpMXToP3nw1tJ/bzfXsgJfIYV+g+JTw
+  74GAElp0h6evKRTgeFuk8CBA0uuFhvHVM5ZwYMlHw2XvgsjYswtshGO6SFrJh6b4
+  bYts/SjKe3B+4f5vBFcTgOvzpyi8A/dtbl3pwUvrOXmW6XEl2z/nMAMCAwEAAaMj
+  MCEwDgYDVR0PAQH/BAQDAgEGMA8GA1UdEwEB/wQFMAMBAf8wDQYJKoZIhvcNAQEL
+  BQADggEBAMpsmrfuuTgkE6GkVyMFlnKsBBJHBXnbym/JxOPqR/Q52+5GrYkB1+uA
+  s06RoLciZREXv21wmD+FRGcDB5vqrCTF1XnePqRFLwT3rgkHehvxAapJP5oLMtfS
+  b2XAlg/DpqiG1F8SNjLEK02KNyW9gF1ith2Z79Ol+9Q8Vfvl54UpNQn0lD26FPMM
+  pu57OChouVUtM+QIabtw2V3E3FH/kqt7kKNTa2pDyCkPOExuytBt4lFcrE7IXx6T
+  yMPMXEktXdAykD2h5HrZqTkZbBUZvNN/XMHbxIjpJt2bKy5os4xW+ufsFhH0SZun
+  RjMz9/7oosusZ4REe6KVTJdgNO7U9zc=
+  -----END CERTIFICATE-----
+
+# set to something very secure! you won't need to use these passwords at all
+uaa_clients_firehose_exporter_secret: ((uaa_firehose_exporter))
+uaa_clients_cf_exporter_secret: ((uaa_cf_exporter))
+uaa_bosh_exporter_client_secret: ((uaa_bosh_exporter))
+
+# This will be the admin password to log in to Grafana GUI
+grafana_admin_password: ((grafana_admin_password))
+# This will be the admin password to log in to Prometheus GUI
+prometheus_admin_password: ((prometheus_admin_password))
+# This will be the admin password to log in to Alertmanager GUI
+alertmanager_password: ((alertmanager_password))
+
+# AZ(s) to deploy to (as defined in the Director configuration)
+deploy_azs: [z1,z2,z3]
+# network to deploy to (as defined in the Director configuration)
+deploy_network: [{name: default}]
+
+# Github token to authenticate with Github. You can generate one at https://github.com/settings/tokens
+github_token: ((github_token))
+
+#
+# Parameters below are fine if you are just kicking tires
+#
+
+# These values work for a small deployment on PCF. Change to adjust resources
+deploy_vm_type_micro: m4.large
+deploy_vm_type_small: m4.large
+
+# arbitrary name for this environment (eg. 'prod')
+metrics_environment: pcf-dev
+
+skip_ssl_verify: true
